@@ -11,6 +11,23 @@ if (isset($_POST['imie']) || isset($_POST['nazwisko']) || isset($_POST['login'])
     $email = $_POST['email'];
     $datautworzenia = date("Y.m.d");
     $hash = md5(rand(0, 1000));
+    
+    //$nazwa[nazwa]='nazwa;              
+    $nazwa [][0] = 'imie';
+    $nazwa [][1] = 'Imię';
+    $nazwa [][0] = 'nazwisko';
+    $nazwa [][1] = 'Nazwisko';
+    $nazwa [][0] = 'login';
+    $nazwa [][1] = 'Login';
+    $nazwa [][0] = 'haslo';
+    $nazwa [][1] = 'Haslo';
+    $nazwa [][0] = 'haslo2';
+    $nazwa [][1] = 'Hasło';
+    $nazwa [][0] = 'email';
+    $nazwa [][1] = 'Email';
+    $nazwa [][0] = 'dataur';
+    $nazwa [][1] = 'Data urodzenia';
+    
 
     if (empty($imie) || strlen($imie) <= 2) {
         echo '<div class="alert alert-warning" role="alert">';
@@ -74,6 +91,18 @@ if (isset($_POST['imie']) || isset($_POST['nazwisko']) || isset($_POST['login'])
 
 <h2>Rejestracja</h2>
 <div><form class="form-horizontal form-group"  method="post" action="index.php?t=rej">
+        <?php 
+        foreach ($nazwa as $id){
+            foreach ($nazwa as $nazwy){
+            echo 'dfds '. $id;
+            echo $id;
+            echo '<br>';
+            echo $nazwy;
+            echo '<br>';
+            }
+            
+        }
+        ?>
 
         <div id="divimie" class="form-group has-feedback">                    
             <label  class="col-sm-4 control-label" for="imie">Imię:</label>

@@ -90,7 +90,37 @@ $(document).ready(function () {
             });
         } else {
             $('#divloginlog').removeClass("has-success").addClass("has-error");
-              $('#spanloginlog').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+            $('#spanloginlog').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+            input.next('.help-block').text("Login musi mieć więcej niż 4 znaki!").removeClass("text-success").addClass("error");
+        }
+    });
+    //Walidacja loginres
+    $('#loginres').on('blur', function () {
+        var input = $(this);
+        var name_length = input.val().length;
+        if (name_length >= 5) {
+            jQuery.ajax({
+                url: "funkcje.php",
+                data: {akcja: 'checkusernamelog', zmienna: $("#loginres").val()},
+                type: "POST",
+                success: function (data) {
+
+                    if (data == 1) {
+                        $('#divloginres').removeClass("has-success").addClass("has-error");
+                        $('#spanloginres').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+                        input.next('.help-block').text("Nie istnieje uzytkownik o podamym loginie").removeClass("text-success").addClass("error");
+                    }
+                    if (data == 0) {
+                        $('#divloginres').removeClass("has-error").addClass("has-success");
+                        input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
+                        $('#spanloginres').removeClass("glyphicon-remove").addClass("glyphicon-ok");
+                    }
+                },
+                error: function () {}
+            });
+        } else {
+            $('#divloginres').removeClass("has-success").addClass("has-error");
+            $('#spanloginres').removeClass("glyphicon-ok").addClass("glyphicon-remove");
             input.next('.help-block').text("Login musi mieć więcej niż 4 znaki!").removeClass("text-success").addClass("error");
         }
     });
@@ -146,6 +176,34 @@ $(document).ready(function () {
             input.next('.help-block').text("Hasło musi mieć więcej niż 8 znaków!").removeClass("text-success").addClass("error");
         }
     });
+    //Walidacja haslazh
+    $('#haslozh').on('blur', function () {
+        var input = $(this);
+        var name_length = input.val().length;
+        if (name_length >= 8) {
+            $('#divhaslozh').removeClass("has-error").addClass("has-success");
+            $('#spanhaslozh').removeClass("glyphicon-remove").addClass("glyphicon-ok");
+            input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
+        } else {
+            $('#divhaslozh').removeClass("has-success").addClass("has-error");
+            $('#spanhaslozh').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+            input.next('.help-block').text("Hasło musi mieć więcej niż 8 znaków!").removeClass("text-success").addClass("error");
+        }
+    });
+    //Walidacja haslalog
+    $('#haslolog').on('blur', function () {
+        var input = $(this);
+        var name_length = input.val().length;
+        if (name_length >= 8) {
+            $('#divhaslolog').removeClass("has-error").addClass("has-success");
+            $('#spanhaslolog').removeClass("glyphicon-remove").addClass("glyphicon-ok");
+            input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
+        } else {
+            $('#divhaslolog').removeClass("has-success").addClass("has-error");
+            $('#spanhaslolog').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+            input.next('.help-block').text("Hasło musi mieć więcej niż 8 znaków!").removeClass("text-success").addClass("error");
+        }
+    });
     //Walidacja hasla2
     $('#haslo2').on('blur', function () {
         var input = $(this);
@@ -191,71 +249,67 @@ $(document).ready(function () {
         }
     });
     //Walidacja datyur
-    /* $('#dataur').on('blur', function () {
-     var input = $(this);
-     var pattern = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
-     var is_data = pattern.test(input.val());
-     var seperator2 = valDate.split('-');
-     if (seperator2.length > 1) {
-     var splitdate = valDate.split('-');
+    $('#dataur').on('blur', function () {
+        var input = $(this);
+        var pattern = /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+        var is_data = pattern.test(input.val());
+        if (is_data) {
+            $('#divdataur').removeClass("has-error").addClass("has-success");
+            $('#spandataur').removeClass("glyphicon-remove").addClass("glyphicon-ok");
+            input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
+        } else {
+            $('#divdataur').removeClass("has-success").addClass("has-error");
+            $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+            input.next('.help-block').text("Wprowadź poprawną datę o formacie RRRR-MM-DD!").removeClass("text-success").addClass("error");
+        }
+    });
+
+    /*$('#dataur').on('blur', function ()
+     {
+     var allowBlank = true;
+     var minYear = 1902;
+     var maxYear = (new Date()).getFullYear();
+     var field = $(this);
+     
+     
+     // regular expression to match required date format
+     re = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
+     
+     if (field.val() != '') {
+     if (regs = field.val().match(re)) {
+     if (regs[3] < 1 || regs[3] > 31) {
+     $('#divdataur').removeClass("has-success").addClass("has-error");
+     $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+     input.next('.help-block').text("Podano nieprawidłowy dzień").removeClass("text-success").addClass("error");
+     
+     } else if (regs[2] < 1 || regs[2] > 12) {
+     $('#divdataur').removeClass("has-success").addClass("has-error");
+     $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+     input.next('.help-block').text("Podano nieprawidłowy miesiąć").removeClass("text-success").addClass("error");
+     
+     } else if (regs[1] < minYear || regs[1] > maxYear) {
+     $('#divdataur').removeClass("has-success").addClass("has-error");
+     $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+     input.next('.help-block').text("Podano nieprawidłowy rok").removeClass("text-success").addClass("error");
+     
      }
-     if (is_data) {
-     $('#divdataur').removeClass("has-error").addClass("has-success");
-     $('#spandataur').removeClass("glyphicon-remove").addClass("glyphicon-ok");
-     input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
      } else {
      $('#divdataur').removeClass("has-success").addClass("has-error");
      $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
      input.next('.help-block').text("Wprowadź poprawną datę o formacie RRRR-MM-DD!").removeClass("text-success").addClass("error");
      }
+     } else if (!allowBlank) {
+     $('#divdataur').removeClass("has-success").addClass("has-error");
+     $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+     input.next('.help-block').text("Wprowadź poprawną datę o formacie RRRR-MM-DD!").removeClass("text-success").addClass("error");
+     }
+     
+     
+     
+     $('#divdataur').removeClass("has-error").addClass("has-success");
+     $('#spandataur').removeClass("glyphicon-remove").addClass("glyphicon-ok");
+     input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
      });*/
-
-    $('#dataur').on('blur', function ()
-    {
-        var allowBlank = true;
-        var minYear = 1902;
-        var maxYear = (new Date()).getFullYear();
-        var field = $(this);
-
-
-        // regular expression to match required date format
-        re = /^(\d{4})-(\d{1,2})-(\d{1,2})$/;
-
-        if (field.val() != '') {
-            if (regs = field.val().match(re)) {
-                if (regs[3] < 1 || regs[3] > 31) {
-                    $('#divdataur').removeClass("has-success").addClass("has-error");
-                    $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
-                    input.next('.help-block').text("Podano nieprawidłowy dzień").removeClass("text-success").addClass("error");
-
-                } else if (regs[2] < 1 || regs[2] > 12) {
-                    $('#divdataur').removeClass("has-success").addClass("has-error");
-                    $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
-                    input.next('.help-block').text("Podano nieprawidłowy miesiąć").removeClass("text-success").addClass("error");
-
-                } else if (regs[1] < minYear || regs[1] > maxYear) {
-                    $('#divdataur').removeClass("has-success").addClass("has-error");
-                    $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
-                    input.next('.help-block').text("Podano nieprawidłowy rok").removeClass("text-success").addClass("error");
-
-                }
-            } else {
-                $('#divdataur').removeClass("has-success").addClass("has-error");
-                $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
-                input.next('.help-block').text("Wprowadź poprawną datę o formacie RRRR-MM-DD!").removeClass("text-success").addClass("error");
-            }
-        } else if (!allowBlank) {
-            $('#divdataur').removeClass("has-success").addClass("has-error");
-            $('#spandataur').removeClass("glyphicon-ok").addClass("glyphicon-remove");
-            input.next('.help-block').text("Wprowadź poprawną datę o formacie RRRR-MM-DD!").removeClass("text-success").addClass("error");
-        }
-
-
-
-        $('#divdataur').removeClass("has-error").addClass("has-success");
-        $('#spandataur').removeClass("glyphicon-remove").addClass("glyphicon-ok");
-        input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
-    });
 
     //Walidacja email
     $('#email').on('blur', function () {
@@ -271,7 +325,7 @@ $(document).ready(function () {
                     if (data == 0) {
                         $('#divemail').removeClass("has-success").addClass("has-error");
                         $('#spanemail').removeClass("glyphicon-ok").addClass("glyphicon-remove");
-                        input.next('.help-block').text("Login jest zajęty. Wpisz inny.").removeClass("text-success").addClass("error");
+                        input.next('.help-block').text("Email jest zajęty. Wpisz inny.").removeClass("text-success").addClass("error");
                     }
                     if (data == 1) {
                         $('#divemail').removeClass("has-error").addClass("has-success");
@@ -290,7 +344,40 @@ $(document).ready(function () {
 
         }
     });
-    
+
+    //Walidacja emailres
+    $('#emailres').on('blur', function () {
+        var input = $(this);
+        var pattern = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        var is_email = pattern.test(input.val());
+        if (is_email) {
+            jQuery.ajax({
+                url: "funkcje.php",
+                data: {akcja: 'checkmailres', zmienna: $("#emailres").val()},
+                type: "POST",
+                success: function (data) {
+                    if (data == 1) {
+                        $('#divemailres').removeClass("has-success").addClass("has-error");
+                        $('#spanemailres').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+                        input.next('.help-block').text("Nie istnieje użytkownik o podanym adresie mail.").removeClass("text-success").addClass("error");
+                    }
+                    if (data == 0) {
+                        $('#divemailres').removeClass("has-error").addClass("has-success");
+                        input.next('.help-block').text("").removeClass("has-error").addClass("text-success");
+                        $('#spanemailres').removeClass("glyphicon-remove").addClass("glyphicon-ok");
+                    }
+                },
+                error: function () {
+                }
+            });
+
+        } else {
+            $('#divemailres').removeClass("has-success").addClass("has-error");
+            input.next('.help-block').text("Wprowadź poprawny email!").removeClass("text-success").addClass("error");
+            $('#spanemailres').removeClass("glyphicon-ok").addClass("glyphicon-remove");
+
+        }
+    });
     //Walidacja emaillog
     $('#emaillog').on('blur', function () {
         var input = $(this);
@@ -363,25 +450,34 @@ $(document).ready(function () {
 
     });
 
+//Walidacja foto
+    
+
     //Po próbie wysłania formularza
     $('#submit button').click(function (event) {
         var imie = $('#divimie');
         var nazwisko = $('#divnazwisko');
         var login = $('#divlogin');
         var loginu = $('#divloginu');
+        var loginres = $('#divloginres');
         var haslo = $('#divhaslo');
         var haslo2 = $('#divhaslo2');
         var email = $('#divemail');
         var emailu = $('#divemailu');
+        var emailres = $('#divemailres');
         var dataur = $('#divdataur');
         var haslonowe = $('#divhaslonowe');
         var haslonowe2 = $('#divhaslonowe2');
-        if (imie.hasClass('has-error') || nazwisko.hasClass('has-error') || login.hasClass('has-error') || loginu.hasClass('has-error') || haslo.hasClass('has-error')
-                || haslo2.hasClass('has-error') || email.hasClass('has-error') || dataur.hasClass('has-error') || emailu.hasClass('has-error')
+        if (imie.hasClass('has-error') || nazwisko.hasClass('has-error') || login.hasClass('has-error') || loginu.hasClass('has-error') || loginres.hasClass('has-error') || haslo.hasClass('has-error')
+                || haslo2.hasClass('has-error') || email.hasClass('has-error') || emailres.hasClass('has-error') || dataur.hasClass('has-error') || emailu.hasClass('has-error')
                 || haslonowe.hasClass('has-error') || haslonowe2.hasClass('has-error')) {
             event.preventDefault();
             alert("Uzupełnij poprawnie wszystkie pola!");
         }
     });
+
+
+    //przycisk rejestracji modal
+
 });
 

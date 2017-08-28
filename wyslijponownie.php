@@ -13,10 +13,6 @@ if (isset($_POST['login']) || isset($_POST['haslo'])) {
     $email = $row['mail'];
     mysqli_close($link);
     wyslijmail($imie, $nazwisko, $login, $email, $hash);
-    /*
-     * To change this license header, choose License Headers in Project Properties.
-     * To change this template file, choose Tools | Templates
-     * and open the template in the editor.
-     */
+    
 }
     
