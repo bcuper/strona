@@ -1,17 +1,17 @@
 <?php
 
-function wyslijMail($imie, $nazwisko, $login, $email, $hash) {
-    $do = 'andrzej(at)standard.lublin.pl';
-    $temat = 'Weryfikacja konta'; // Give the email a subject 
+function wyslijmail($imie, $nazwisko, $login, $email, $hash) {
+    $do = $email;
+    $temat = 'Weryfikacja konta';  
     $tresc = '
-Twoje konto zostało utworzone. <br >
-Twoje dane:<br>
-Imie: ' . $imie . '<br>
-Nazwisko: ' . $nazwisko . '<br>
-Login: ' . $login . '<br>
-Email: ' . $email . '<br>
-Potwirdź za pomocą linku aktywacyjnego poniżej.<br>
-http://10.10.10.10/i2/strona_1/verify.php?email=' . $email . '&hash=' . $hash . '';
+Twoje konto zostało utworzone.
+Twoje dane:
+Imie: ' . $imie . '
+Nazwisko: ' . $nazwisko . '
+Login: ' . $login . '
+Email: ' . $email . '
+Potwirdź za pomocą linku aktywacyjnego poniżej.
+http://10.10.10.10/i2/strona/verify.php?email=' . $email . '&hash=' . $hash . '';
 
     $naglowki = 'From:bartlomiej.cuper@standard.lublin.pl' . "\r\n";
     mail($do, $temat, $tresc, $naglowki);
@@ -19,7 +19,7 @@ http://10.10.10.10/i2/strona_1/verify.php?email=' . $email . '&hash=' . $hash . 
 
 function wyslijhaslo($haslo, $login, $email, $hash) {
     $do = $email;
-    $temat = 'Weryfikacja zmiany hasła'; // Give the email a subject 
+    $temat = 'Weryfikacja zmiany hasła'; 
     $tresc = '
 Twoje hasło zostało zmienione.
 Twoje dane:
@@ -27,8 +27,8 @@ Login: ' . $login . '
 Email: ' . $email . '
 Nowe hasło: ' . $haslo . '
 Potwirdź za pomocą linku aktywacyjnego poniżej.
-http://10.10.10.10/i2/strona_1/verifyzh.php?email=' . $email . '&hash=' . $hash . '&haslo=' . md5($haslo) . '';
-        echo $tresc;
+http://10.10.10.10/i2/strona/verifyzh.php?email=' . $email . '&hash=' . $hash . '&haslo=' . md5($haslo) . '';
+
     $naglowki = 'From:bartlomiej.cuper@standard.lublin.pl' . "\r\n";
     mail($do, $temat, $tresc, $naglowki);
     
